@@ -1,0 +1,773 @@
+{
+  "name": "crawl4ai-outputfiles",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "e2845ae3-bfc5-4d29-9529-beb30985e36a",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "f8245b2f-65ba-46dc-ad05-d580c24d67dd",
+      "name": "Receive Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -160,
+        180
+      ],
+      "webhookId": "e2845ae3-bfc5-4d29-9529-beb30985e36a"
+    },
+    {
+      "parameters": {
+        "functionCode": "return [{ json: { urls: [ $json.body.chatInput ], sessionId: $json.sessionId } }];"
+      },
+      "id": "d8989064-5ab5-48eb-9985-31c9ecf17c2e",
+      "name": "Transform Input",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        40,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "requestMethod": "POST",
+        "url": "http://172.17.0.1:8860/crawl",
+        "jsonParameters": true,
+        "options": {},
+        "bodyParametersJson": "={\n  \"urls\": [ \"{{$json.urls}}\" ],\n  \"output_path\": \"/data/gainsec.txt\",\n  \"output_path_html\": \"/data/gainsec.html\"\n}\n"
+      },
+      "id": "9211b31b-e28e-4b0f-b7e6-0d48588e1d1e",
+      "name": "Crawl Site",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 2,
+      "position": [
+        260,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "functionCode": "const url = $json.urls?.[0] || 'unknown';\nconst links = $json.links?.length || 0;\nconst docs = $json.documents?.length || 0;\nreturn { json: { output: `Crawled ${url} — ${links} links, ${docs} docs.` } };"
+      },
+      "id": "f4d50d78-8ed8-4e22-9c27-9a615e16ac31",
+      "name": "Format Response",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        -480,
+        -280
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "980b1eac-1909-442c-a288-b32740a447fd",
+      "name": "Respond to OpenWebUI",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        -260,
+        -280
+      ]
+    },
+    {
+      "parameters": {
+        "requestMethod": "POST",
+        "url": "http://172.17.0.1:8860/pdf",
+        "jsonParameters": true,
+        "options": {
+          "bodyContentType": "json"
+        },
+        "bodyParametersJson": "={\n  \"url\": \"{{$json.urls}}\",\n  \"output_path\": \"/data/{{ \n  $json.urls[0].split('/')[2]\n    .replace(/^www\\./, '')\n    .replace(/[^a-zA-Z0-9.-]/g, '') \n  + '-' + new Date().toISOString().slice(0,10) + '.pdf' \n}}\" \n}\n"
+      },
+      "id": "0adc71e5-415c-47fe-8069-a1aa35cdd95d",
+      "name": "crawl-to-pdf",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 2,
+      "position": [
+        1340,
+        60
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "=/data/shared/raw-html-{{ \n  $('Crawl Site').item.json.results[0].url.split('/')[2]\n    .replace(/^www\\./, '')\n    .replace(/[^a-zA-Z0-9.-]/g, '') \n  + '-' + new Date().toISOString().slice(0,10) + '.html' \n}}",
+        "dataPropertyName": "=data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        1660,
+        500
+      ],
+      "id": "8c7e40d3-c1b4-421e-b67c-246ba7551791",
+      "name": "Read/Write Files from Disk"
+    },
+    {
+      "parameters": {
+        "requestMethod": "POST",
+        "url": "http://172.17.0.1:8860/md",
+        "jsonParameters": true,
+        "options": {},
+        "bodyParametersJson": "={\n  \"url\": \"{{$json.urls}}\",\n  \"output_path\": \"/data/gainsec.md\" \n}\n"
+      },
+      "id": "c9eb08dc-647f-4b7d-b7db-17eaeef0003b",
+      "name": "crawl-to-md",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 2,
+      "position": [
+        -220,
+        580
+      ]
+    },
+    {
+      "parameters": {
+        "requestMethod": "POST",
+        "url": "http://172.17.0.1:8860/html",
+        "jsonParameters": true,
+        "options": {},
+        "bodyParametersJson": "={\n  \"url\": \"{{$json.urls}}\",\n  \"output_path\": \"/data/gainsec.html\" \n}\n"
+      },
+      "id": "70ac5730-d88f-47ed-891f-8033315c722e",
+      "name": "crawl-to-html",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 2,
+      "position": [
+        -220,
+        820
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "=/data/shared/raw-html-{{ \n  $('crawl-to-html').item.json.url.split('/')[2]\n    .replace(/^www\\./, '')\n    .replace(/[^a-zA-Z0-9.-]/g, '') \n  + '-' + new Date().toISOString().slice(0,10) + '.html' \n}}",
+        "dataPropertyName": "=data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        300,
+        820
+      ],
+      "id": "e40359c7-ec99-482c-a9b8-45fd86533aff",
+      "name": "Read/Write Files from Disk1"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "=/data/shared/raw-output-{{ \n  $('Crawl Site').item.json.results[0].url.split('/')[2]\n    .replace(/^www\\./, '')\n    .replace(/[^a-zA-Z0-9.-]/g, '') \n  + '-' + new Date().toISOString().slice(0,10) + '.raw' \n}}",
+        "dataPropertyName": "=data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        700,
+        220
+      ],
+      "id": "768ebab3-730d-4321-912d-f56830f736e7",
+      "name": "Read/Write Files from Disk2"
+    },
+    {
+      "parameters": {
+        "content": "## Crawls + Writes Raw Output to File",
+        "height": 180,
+        "width": 720,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        240,
+        160
+      ],
+      "id": "7031f2cd-d801-4344-9295-c1d28bd45c7c",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Writes HTML to File",
+        "height": 180,
+        "width": 600,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1320,
+        440
+      ],
+      "id": "5f46bdbb-a39b-45b1-8600-f87e3d7037c7",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Direct HTML Endpoint; Just Wire to it Transform Input",
+        "height": 180,
+        "width": 780,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -260,
+        760
+      ],
+      "id": "22cc53f9-14f2-4438-8fd4-0478cfefd24b",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "requestMethod": "POST",
+        "url": "http://172.17.0.1:8860/screenshot",
+        "options": {
+          "bodyContentType": "json"
+        },
+        "bodyParametersUi": {
+          "parameter": [
+            {
+              "name": "url",
+              "value": "={{ $json.urls[0] }}"
+            },
+            {
+              "name": "output_path",
+              "value": "=/data/screenshot-{{ $json.urls[0].split('/')[2].replace(/^www\\./, '').replace(/[^a-zA-Z0-9.-]/g, '') }}-{{ new Date().toISOString().slice(0,10) }}.png"
+            }
+          ]
+        }
+      },
+      "id": "771dd63c-4044-4f6d-897b-6dc44895a776",
+      "name": "crawl-to-screenshot",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 2,
+      "position": [
+        1340,
+        720
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Saves Screenshot of Page",
+        "width": 420,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1300,
+        660
+      ],
+      "id": "b5db54cb-5881-4617-834e-d1045abb4f54",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Saves PDF of Website",
+        "width": 500,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1280,
+        20
+      ],
+      "id": "1860e1c5-8353-4177-b95e-d0623e5ce54a",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "=/data/shared/all-urls-{{ \n  $('Crawl Site').item.json.results[0].url.split('/')[2]\n    .replace(/^www\\./, '')\n    .replace(/[^a-zA-Z0-9.-]/g, '') \n  + '-' + new Date().toISOString().slice(0,10) + '.html' \n}}",
+        "dataPropertyName": "=data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        1520,
+        -220
+      ],
+      "id": "80b09586-3b5b-4d7d-aa72-ce7c665151b1",
+      "name": "Read/Write Files from Disk3"
+    },
+    {
+      "parameters": {
+        "content": "## Saves all URLs",
+        "height": 220,
+        "width": 420,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1280,
+        -260
+      ],
+      "id": "e94f4d42-6aac-4f69-9574-d1c91d8e9700",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "jsCode": "const html = $json.results[0].html;\n\nconst urls = [...new Set(  // remove duplicates\n  html.match(/https?:\\/\\/[^\\s\"'<>]+/g) || []\n)];\n\nreturn [{\n  binary: {\n    data: {\n      data: Buffer.from(urls.join('\\n')).toString('base64'),\n      mimeType: 'text/plain',\n      fileName: 'urls.txt'\n    }\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1340,
+        -220
+      ],
+      "id": "11b82c9d-28d3-4dad-8b31-1b72e943ed00",
+      "name": "ExtractAllURLs"
+    },
+    {
+      "parameters": {
+        "jsCode": "const html = $json.results[0].html;\n\nreturn [{\n  binary: {\n    data: {\n      data: Buffer.from(html).toString('base64'),\n      mimeType: 'text/html',\n      fileName: 'raw.html' // You can make this dynamic if you want\n    }\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1500,
+        500
+      ],
+      "id": "a38a6dbf-c0d2-4700-ba0b-9bce6a1aae93",
+      "name": "ConvertsHTMLtoAcceptableBin"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "17eea089-77f1-4909-909d-84eef24492c8",
+              "name": "results[0].html",
+              "value": "={{ $json.results[0].html }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1340,
+        500
+      ],
+      "id": "78994ae3-8b83-4144-8b6b-9484d8967535",
+      "name": "GrabsHTMLFromOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const html = $input.first().json.html;\n\nreturn [{\n  binary: {\n    data: {\n      data: Buffer.from(html).toString('base64'),\n      mimeType: 'text/html',\n      fileName: 'rawhtml.html' // You can make this dynamic if you want\n    }\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        40,
+        820
+      ],
+      "id": "37d9bc36-3272-41ea-976a-5028277d8333",
+      "name": "ConvertsHTMLtoAcceptableBin1"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{\n  binary: {\n    data: {\n      data: Buffer.from(JSON.stringify($json, null, 2)).toString('base64'),\n      mimeType: 'application/json',\n      fileName: 'rawoutput.json'\n    }\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        560,
+        220
+      ],
+      "id": "ac1e8d05-144f-4b78-9cef-83eb258c987f",
+      "name": "ConvertsRawOutputToAcceptableBin"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "=/data/shared/raw-md-{{ \n  $('crawl-to-md').item.json.url.split('/')[2]\n    .replace(/^www\\./, '')\n    .replace(/[^a-zA-Z0-9.-]/g, '') \n  + '-' + new Date().toISOString().slice(0,10) + '.md' \n}}",
+        "dataPropertyName": "=data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        120,
+        580
+      ],
+      "id": "7f87a1a2-cc12-444e-8cfd-133ccf2431f9",
+      "name": "Read/Write Files from Disk4"
+    },
+    {
+      "parameters": {
+        "jsCode": "const md = $input.first().json.markdown;\n\nreturn [{\n  binary: {\n    data: {\n      data: Buffer.from(md).toString('base64'),\n      mimeType: 'text/md',\n      fileName: 'raw.md' // You can make this dynamic if you want\n    }\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -40,
+        580
+      ],
+      "id": "93c003f0-05c7-43a5-a98c-ae909577dcb2",
+      "name": "ConvertsMDToAcceptableBin"
+    },
+    {
+      "parameters": {
+        "content": "## Direct Markdown Endpoint; Just wire it to Transform Input",
+        "height": 220,
+        "width": 680,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -260,
+        520
+      ],
+      "id": "d1d5ff35-119e-4212-9f63-05bcec4411cf",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "17eea089-77f1-4909-909d-84eef24492c8",
+              "name": "=md",
+              "value": "={{ $json.results[0].markdown.raw_markdown }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1340,
+        280
+      ],
+      "id": "d7c55790-620e-4219-bf2e-c82342190abc",
+      "name": "GrabsHTMLFromOutput1"
+    },
+    {
+      "parameters": {
+        "jsCode": "const md = $input.first().json.md;\n\nreturn [{\n  binary: {\n    data: {\n      data: Buffer.from(md).toString('base64'),\n      mimeType: 'text/md',\n      fileName: 'raw.md' // You can make this dynamic if you want\n    }\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1500,
+        280
+      ],
+      "id": "678476a4-8617-4f7d-adcf-5f1090cd53ce",
+      "name": "ConvertsHTMLtoAcceptableBin2"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "=/data/shared/raw-md-{{ \n  $('Crawl Site').item.json.results[0].url.split('/')[2]\n    .replace(/^www\\./, '')\n    .replace(/[^a-zA-Z0-9.-]/g, '') \n  + '-' + new Date().toISOString().slice(0,10) + '.md' \n}}",
+        "dataPropertyName": "=data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        1720,
+        280
+      ],
+      "id": "12fcdf55-337b-4dfa-a652-c3fab69a36d8",
+      "name": "Read/Write Files from Disk5"
+    },
+    {
+      "parameters": {
+        "content": "## Writes Markdown to File",
+        "width": 520,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1320,
+        240
+      ],
+      "id": "2584adbc-993c-4a38-9b80-a37e5cbfbe0b",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "jsCode": "const links = new Set();\n\nconst res = $json.results?.[0] || {};\nconst linksData = res.links || {};\n\n// From internal links\n(linksData.internal || []).forEach(l => l.href && links.add(l.href));\n\n// From external links\n(linksData.external || []).forEach(l => l.href && links.add(l.href));\n\n// From media images\n(res.media?.images || []).forEach(img => img.src && links.add(img.src));\n\nreturn [{\n  binary: {\n    data: {\n      data: Buffer.from([...links].join('\\n')).toString('base64'),\n      mimeType: 'text/plain',\n      fileName: 'all-links.txt'\n    }\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1340,
+        -480
+      ],
+      "id": "0df29feb-76fe-48d2-b355-48b4c0614bea",
+      "name": "Grabs all Links-DefinedInOutput"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "=/data/shared/all-links-{{ \n  $('Crawl Site').item.json.results[0].url.split('/')[2]\n    .replace(/^www\\./, '')\n    .replace(/[^a-zA-Z0-9.-]/g, '') \n  + '-' + new Date().toISOString().slice(0,10) + '.txt' \n}}",
+        "dataPropertyName": "=data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        1560,
+        -480
+      ],
+      "id": "343d04ba-0f70-4a9c-adea-2642c39d694e",
+      "name": "Read/Write Files from Disk6"
+    },
+    {
+      "parameters": {
+        "content": "## Saves all Links",
+        "height": 200,
+        "width": 440,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1300,
+        -520
+      ],
+      "id": "4cd95266-80a3-4d23-8103-5eed8bfb7e71",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "content": "# Crawl4AI API to Local Files\n# Author: Jon Gaines\n# URL: https://gainsec.com  \n# Version: 0.5\n\n",
+        "height": 260,
+        "width": 520
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1300,
+        20
+      ],
+      "id": "97325df4-3b33-4c89-92b6-b446d8603b24",
+      "name": "Sticky Note9"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Receive Webhook": {
+      "main": [
+        [
+          {
+            "node": "Transform Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transform Input": {
+      "main": [
+        [
+          {
+            "node": "Crawl Site",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "crawl-to-pdf",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "crawl-to-screenshot",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Crawl Site": {
+      "main": [
+        [
+          {
+            "node": "ConvertsRawOutputToAcceptableBin",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "GrabsHTMLFromOutput",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "ExtractAllURLs",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "GrabsHTMLFromOutput1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Grabs all Links-DefinedInOutput",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Response": {
+      "main": [
+        [
+          {
+            "node": "Respond to OpenWebUI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "crawl-to-html": {
+      "main": [
+        [
+          {
+            "node": "ConvertsHTMLtoAcceptableBin1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ExtractAllURLs": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ConvertsHTMLtoAcceptableBin": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GrabsHTMLFromOutput": {
+      "main": [
+        [
+          {
+            "node": "ConvertsHTMLtoAcceptableBin",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ConvertsHTMLtoAcceptableBin1": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ConvertsRawOutputToAcceptableBin": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "crawl-to-md": {
+      "main": [
+        [
+          {
+            "node": "ConvertsMDToAcceptableBin",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ConvertsMDToAcceptableBin": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GrabsHTMLFromOutput1": {
+      "main": [
+        [
+          {
+            "node": "ConvertsHTMLtoAcceptableBin2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ConvertsHTMLtoAcceptableBin2": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Grabs all Links-DefinedInOutput": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "ace99fe1-47cd-4a37-80a8-3decbf5a51d5",
+  "meta": {
+    "instanceId": "558d88703fb65b2d0e44613bc35916258b0f0bf983c5d4730c00c424b77ca36a"
+  },
+  "id": "5UCSYIu4YZ8D5yBv",
+  "tags": []
+}

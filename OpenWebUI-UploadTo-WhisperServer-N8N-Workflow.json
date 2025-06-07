@@ -1,0 +1,174 @@
+{
+  "name": "Whisper-File-Trigger",
+  "nodes": [
+    {
+      "parameters": {
+        "triggerOn": "folder",
+        "path": "/data/shared/uploads",
+        "events": [
+          "add"
+        ],
+        "options": {
+          "awaitWriteFinish": false
+        }
+      },
+      "type": "n8n-nodes-base.localFileTrigger",
+      "typeVersion": 1,
+      "position": [
+        -760,
+        -100
+      ],
+      "id": "a126e04a-e3ce-49aa-bcef-10df132a50af",
+      "name": "Local File Trigger"
+    },
+    {
+      "parameters": {
+        "fileSelector": "/data/shared/uploads/*.mp3"
+      },
+      "type": "n8n-nodes-base.readBinaryFiles",
+      "typeVersion": 1,
+      "position": [
+        -540,
+        -100
+      ],
+      "id": "2e99accd-e13a-445b-a353-8b957627f6a4",
+      "name": "Read MP3 File"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://whisper-server:9000/asr",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "audio_file",
+              "value": "={{$binary.data}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        -320,
+        -100
+      ],
+      "id": "769e5f6f-e34b-43c9-8e69-97c1024edddc",
+      "name": "Send to Whisper"
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "data",
+              "value": "={{$json[\"text\"]}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        -100,
+        -100
+      ],
+      "id": "e7b6f0a8-587c-43c7-8c7a-0a07b366cea9",
+      "name": "Extract Transcript Text"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "=/data/shared/transcripts/{{$binary.data.fileName.replace('.mp3', '.txt')}}",
+        "options": {
+          "append": false
+        }
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        100,
+        -100
+      ],
+      "id": "bbabbcd1-0120-4bd7-95a7-1d467a7b4e50",
+      "name": "Write Transcript File"
+    },
+    {
+      "parameters": {
+        "content": "# Open-WebUI To Local File Trigger to Whisper Transcription\n# Author: Jon Gaines\n# Website/More Info: https://gainsec.com/\n# Version: 0.8",
+        "height": 260,
+        "width": 980
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1380,
+        -400
+      ],
+      "id": "172d0bd7-a274-4f4f-88ce-66c62c374c82",
+      "name": "Sticky Note"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Local File Trigger": {
+      "main": [
+        [
+          {
+            "node": "Read MP3 File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read MP3 File": {
+      "main": [
+        [
+          {
+            "node": "Send to Whisper",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send to Whisper": {
+      "main": [
+        [
+          {
+            "node": "Extract Transcript Text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Transcript Text": {
+      "main": [
+        [
+          {
+            "node": "Write Transcript File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "bc09ea54-d8d6-4215-ac2c-64ce3b594a3c",
+  "meta": {
+    "instanceId": "558d88703fb65b2d0e44613bc35916258b0f0bf983c5d4730c00c424b77ca36a"
+  },
+  "id": "mDGaLHaeiefTSxBY",
+  "tags": []
+}
