@@ -7,10 +7,11 @@ Notes, custom scripts, workflows, etc from doing AI research / prototyping a loc
 [Part 2](https://gainsec.com/2025/06/02/the-quickest-and-simplest-guide-to-spinning-up-a-powerful-local-ai-stack-part-2-searxng/)
 [Part 3](https://gainsec.com/2025/06/03/the-quickest-and-simplest-guide-to-spinning-up-a-powerful-local-ai-stack-part-3-image-generation-via-stable-diffusion/)
 [Part 4](https://gainsec.com/2025/06/04/the-quickest-and-simplest-guide-to-spinning-up-a-powerful-local-ai-stack-part-4-transcription-via-whisper/)
+[Part 5](https://gainsec.com/2025/06/07/the-quickest-and-simplest-guide-to-spinning-up-a-powerful-local-ai-stack-part-5-open-webui-to-crawl4ai-local-files/)
 [More Coming Soon](https://gainsec.com)
 
 ## Current Stack
-So because I'm still using cole's docker-compose there's a bunch of stuff that isn't needed which I'll remove, clean and polish in Part 6 or 7.
+So because I'm still using cole's docker-compose there's a bunch of stuff that isn't needed which I'll remove, clean and polish in Part 6 or 7. For now, if you visit the links above, you'll find the current configurations/docker-compose.yml and other tips, notes, etc.
 
 So I'll only list what I'm actually utiilzing ATM and expect the docker-compose to be added to this repo sooner then later.
 
@@ -28,11 +29,11 @@ So I'll only list what I'm actually utiilzing ATM and expect the docker-compose 
 
 Haven't put much up in this public repo yet, but here is what is currently available:
 
-OpenWebUI-UploadTo-WhisperServer-N8N-Workflow.json || Allows you to integrate your own Whisper Server into OpenWebUI via N8N. Upload the mp3 to Open-WebUI, it causes a local file trigger in N8N which reads the MP3 file, sends to the whisper server, extracts the transcript from the response and writes it to a file. 
+[OpenWebUI-UploadTo-WhisperServer-N8N-Workflow.json](https://github.com/GainSec/GainSec-Local-AI-Stack/blob/main/OpenWebUI-UploadTo-WhisperServer-N8N-Workflow.json) || Allows you to integrate your own Whisper Server into OpenWebUI via N8N. Upload the mp3 to Open-WebUI, it causes a local file trigger in N8N which reads the MP3 file, sends to the whisper server, extracts the transcript from the response and writes it to a file. 
  
-crawl4ai-openwebui-function.py || Open-WebUI Function that takes user input and sends it to N8N to be used by Crawl4AI 
+[crawl4ai-openwebui-function.py](https://github.com/GainSec/GainSec-Local-AI-Stack/blob/main/crawl4ai-openwebui-function.py) || Open-WebUI Function that takes user input and sends it to N8N to be used by Crawl4AI 
 
-crawl4ai_outputfiles-final.json || Used along with the Open-WebUI Function, this takes the recieved input, transforms it into a useful format, sends it to crawl4AI API, and outputs a bunch of different files from Crawl4AI's response. It creates a raw output file, a URL list (uses a code node to extract ALL Urls), a Link list (grabs all Links from crawl4ai structured output), markdown file, HTML file and Screenshot of Website.
+[crawl4ai_outputfiles-final.json](https://github.com/GainSec/GainSec-Local-AI-Stack/blob/main/crawl4ai_outputfiles.json) || Used along with the Open-WebUI Function, this takes the recieved input, transforms it into a useful format, sends it to crawl4AI API, and outputs a bunch of different files from Crawl4AI's response. It creates a raw output file, a URL list (uses a code node to extract ALL Urls), a Link list (grabs all Links from crawl4ai structured output), markdown file, HTML file and Screenshot of Website.
 
 ## Authors
 
