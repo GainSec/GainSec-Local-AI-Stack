@@ -16,7 +16,8 @@ This is a work in progress as I continue to research, experiment and utilize AI 
 <img src="https://gainsec.com/wp-content/uploads/2025/06/post-rag.jpg" alt="RAG PDF N8N Workflow" width="600"/>
 
 ### Crawl4AI To Local File Output (Agentic RAG Implementation Coming Soon):
-<img src="https://gainsec.com/wp-content/uploads/2025/06/image-10.png" alt="Craw4AI Local File Output" width="600"/>
+<img src="https://gainsec.com/wp-content/uploads/2025/06/crawl4ai-local-files.jpg" alt="Craw4AI Local File Output" width="600"/>
+<img src="https://gainsec.com/wp-content/uploads/2025/06/image-10.png" alt="Craw4AI Local File N8N Workflow" width="600"/>
 
 ## Current Stack
 
