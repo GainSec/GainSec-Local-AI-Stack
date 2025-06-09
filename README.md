@@ -6,18 +6,17 @@ This is a work in progress as I continue to research, experiment and utilize AI 
 
 ### Here's some example of what you can do all within one chat thread:
 
-<img src="https://gainsec.com/wp-content/uploads/2025/06/chat1.jpg" alt="Stable-Diffusion" width="400"/>
-<img src="https://gainsec.com/wp-content/uploads/2025/06/chat2.jpg" alt="Web Search" width="400"/>
-<img src="https://gainsec.com/wp-content/uploads/2025/06/chat3.jpg" alt="Whisper Transcriptions" width="400"/>
-<img src="https://gainsec.com/wp-content/uploads/2025/06/chat4.jpg" alt="Crawl4AI Web Access" width="400"/>
+<img src="https://gainsec.com/wp-content/uploads/2025/06/chat1.jpg" alt="Stable-Diffusion" width="600"/>
+<img src="https://gainsec.com/wp-content/uploads/2025/06/chat2.jpg" alt="Web Search" width="600"/>
+<img src="https://gainsec.com/wp-content/uploads/2025/06/chat3.jpg" alt="Whisper Transcriptions" width="600"/>
+<img src="https://gainsec.com/wp-content/uploads/2025/06/chat4.jpg" alt="Crawl4AI Web Access" width="600"/>
 
 ### Local Agentic RAG Implementation:
-<img src="https://gainsec.com/wp-content/uploads/2025/06/image-3.png" alt="RAG PDF OpenWeb-UI" width="400"/>
-<img src="https://gainsec.com/wp-content/uploads/2025/06/post-rag.jpg" alt="RAG PDF N8N Workflow" width="400"/>
+<img src="https://gainsec.com/wp-content/uploads/2025/06/image-3.png" alt="RAG PDF OpenWeb-UI" width="600"/>
+<img src="https://gainsec.com/wp-content/uploads/2025/06/post-rag.jpg" alt="RAG PDF N8N Workflow" width="600"/>
 
 ### Crawl4AI To Local File Output (Agentic RAG Implementation Coming Soon):
-<img src="https://gainsec.com/wp-content/uploads/2025/06/image-10.png" alt="Craw4AI Local File Output" width="400"/>
-
+<img src="https://gainsec.com/wp-content/uploads/2025/06/image-10.png" alt="Craw4AI Local File Output" width="600"/>
 
 ## Current Stack
 
@@ -37,40 +36,40 @@ Haven't put much up in this public repo yet, but below is what I have currently 
 
 ### N8N WorkFlows
 
-[/GainSec-Local-AI-Stack/n8n-workflows/OpenWebUI-UploadTo-WhisperServer-N8N-Workflow.json](https://github.com/GainSec/GainSec-Local-AI-Stack/blob/main/OpenWebUI-UploadTo-WhisperServer-N8N-Workflow.json) - Allows you to integrate your own Whisper Server into OpenWebUI via N8N. Upload the mp3 to Open-WebUI, it causes a local file trigger in N8N which reads the MP3 file, sends to the whisper server, extracts the transcript from the response and writes it to a file. 
+[/GainSec-Local-AI-Stack/n8n-workflows/OpenWebUI-UploadTo-WhisperServer-N8N-Workflow.json](https://github.com/GainSec/GainSec-Local-AI-Stack/blob/main/n8n-workflows/OpenWebUI-UploadTo-WhisperServer-N8N-Workflow.json) - Allows you to integrate your own Whisper Server into OpenWebUI via N8N. Upload the mp3 to Open-WebUI, it causes a local file trigger in N8N which reads the MP3 file, sends to the whisper server, extracts the transcript from the response and writes it to a file. 
 
-[/GainSec-Local-AI-Stack/n8n-workflows/crawl4ai_outputfiles-final.json](https://github.com/GainSec/GainSec-Local-AI-Stack/blob/main/crawl4ai_outputfiles.json) - Used along with the Open-WebUI Function, this takes the recieved input, transforms it into a useful format, sends it to crawl4AI API, and outputs a bunch of different files from Crawl4AI's response. It creates a raw output file, a URL list (uses a code node to extract ALL Urls), a Link list (grabs all Links from crawl4ai structured output), markdown file, HTML file and Screenshot of Website.
+[/GainSec-Local-AI-Stack/n8n-workflows/crawl4ai_outputfiles-final.json](https://github.com/GainSec/GainSec-Local-AI-Stack/blob/main/n8n-workflows/crawl4ai_outputfiles.json) - Used along with the Open-WebUI Function, this takes the recieved input, transforms it into a useful format, sends it to crawl4AI API, and outputs a bunch of different files from Crawl4AI's response. It creates a raw output file, a URL list (uses a code node to extract ALL Urls), a Link list (grabs all Links from crawl4ai structured output), markdown file, HTML file and Screenshot of Website.
 
-[/GainSec-Local-AI-Stack/n8n-workflows/V1_Local_RAG_AI_Agent.json] (https://github.com/GainSec/GainSec-Local-AI-Stack/) - Local RAG AI Agent implementation from [Self-hosted AI Package](https://github.com/coleam00/local-ai-packaged)
+[/GainSec-Local-AI-Stack/n8n-workflows/V1_Local_RAG_AI_Agent.json] (https://github.com/GainSec/GainSec-Local-AI-Stack/blob/main/n8n-workflows/V1_Local_RAG_AI_Agent.json) - Local RAG AI Agent implementation from [Self-hosted AI Package](https://github.com/coleam00/local-ai-packaged)
 
-[/GainSec-Local-AI-Stack/n8n-workflows/V3_Local_Agentic_RAG_AI_Agent.json] (https://github.com/GainSec/GainSec-Local-AI-Stack/) - Local RAG AI Agent implementation from [Self-hosted AI Package](https://github.com/coleam00/local-ai-packaged)
+[/GainSec-Local-AI-Stack/n8n-workflows/V3_Local_Agentic_RAG_AI_Agent.json] (https://github.com/GainSec/GainSec-Local-AI-Stack/blob/main/n8n-workflows/V3_Local_Agentic_RAG_AI_Agent.json) - Local RAG AI Agent implementation from [Self-hosted AI Package](https://github.com/coleam00/local-ai-packaged)
 
 
 ### Open-WebUI Functions/Pipes
 
-[/GainSec-Local-AI-Stack/openweb-ui-functions/crawl4ai-openwebui-function.py](https://github.com/GainSec/GainSec-Local-AI-Stack/blob/main/crawl4ai-openwebui-function.py) - Open-WebUI Function that takes user input and sends it to N8N to be used by Crawl4AI 
+[/GainSec-Local-AI-Stack/openweb-ui-functions/crawl4ai-openwebui-function.py](https://github.com/GainSec/GainSec-Local-AI-Stack/blob/main/openweb-ui-functions/crawl4ai-openwebui-function.py) - Open-WebUI Function that takes user input and sends it to N8N to be used by Crawl4AI 
 
-[/GainSec-Local-AI-Stack/openweb-ui-functions/n8npipe-local-agentic-rag.py](https://github.com/GainSec/GainSec-Local-AI-Stack/) - Open-WebUI Function that pipes into the RAG AI Agentic Implementations from [Self-hosted AI Package](https://github.com/coleam00/local-ai-packaged)
+[/GainSec-Local-AI-Stack/openweb-ui-functions/n8npipe-local-agentic-rag.py](https://github.com/GainSec/GainSec-Local-AI-Stack/blob/main/openweb-ui-functions/n8npipe-local-agentic-rag.py) - Open-WebUI Function that pipes into the RAG AI Agentic Implementations from [Self-hosted AI Package](https://github.com/coleam00/local-ai-packaged)
 
 ### Scripts
 
-[/GainSec-Local-AI-Stack/setup_dirs.sh](https://github.com/GainSec/GainSec-Local-AI-Stack/) - Script to create all the required directories and give them proper permissions
+[/GainSec-Local-AI-Stack/setup_dirs.sh](https://github.com/GainSec/GainSec-Local-AI-Stack/blob/main/setup_dirs.sh) - Script to create all the required directories and give them proper permissions
 
-[/GainSec-Local-AI-Stack/example.env](https://github.com/GainSec/GainSec-Local-AI-Stack/) - Example .env file that is used alongside the docker docker compose
+[/GainSec-Local-AI-Stack/example.env](https://github.com/GainSec/GainSec-Local-AI-Stack/blob/main/example.env) - Example .env file that is used alongside the docker docker compose
 
-[/GainSec-Local-AI-Stack/docker-compose.yml](https://github.com/GainSec/GainSec-Local-AI-Stack/) - The docker compose that is used to pull-up all the services
+[/GainSec-Local-AI-Stack/docker-compose.yml](https://github.com/GainSec/GainSec-Local-AI-Stack/blob/main/docker-compose.yml) - The docker compose that is used to pull-up all the services
 
-[/GainSec-Local-AI-Stack/start_services.py](https://github.com/GainSec/GainSec-Local-AI-Stack/) - Python script to properly spin up all the services + run some other checks
+[/GainSec-Local-AI-Stack/start_services.py](https://github.com/GainSec/GainSec-Local-AI-Stack/blob/main/start_services.py) - Python script to properly spin up all the services + run some other checks
 
 ### Directories
 
-[/GainSec-Local-AI-Stack/shared](https://github.com/GainSec/GainSec-Local-AI-Stack/) - Where most data lives that is used across services or exported/output
+`/GainSec-Local-AI-Stack/shared` - Where most data lives that is used across services or exported/output
 
-[/GainSec-Local-AI-Stack/shared/crawl/](https://github.com/GainSec/GainSec-Local-AI-Stack/) - Where the N8N crawl4ai workflow outputs files to along with some subdirectories: `html`, `image`, `links`, `markdown`, `pdf`, `urls` (the raw output is saved into `/shared/crawl/`)
+`/GainSec-Local-AI-Stack/shared/crawl/` - Where the N8N crawl4ai workflow outputs files to along with some subdirectories: `html`, `image`, `links`, `markdown`, `pdf`, `urls` (the raw output is saved into `/shared/crawl/`)
 
-[/GainSec-Local-AI-Stack/shared/transcripts](https://github.com/GainSec/GainSec-Local-AI-Stack/) - Where the N8N Whisper workflow outputs transcriptions
+`/GainSec-Local-AI-Stack/shared/transcripts` - Where the N8N Whisper workflow outputs transcriptions
 
-[/GainSec-Local-AI-Stack/shared/uploads](https://github.com/GainSec/GainSec-Local-AI-Stack/) - Where Open-WebUI stores uploads which are then grabbed by the N8N Whisper workflow
+`/GainSec-Local-AI-Stack/shared/uploads` - Where Open-WebUI stores uploads which are then grabbed by the N8N Whisper workflow
 
 ## Installation
 
@@ -126,14 +125,15 @@ Haven't put much up in this public repo yet, but below is what I have currently 
 | crawl4ai                 | `crawl4ai`           | 8860          | 11235              | http://localhost:8860      |
 
 ## Get more explainations and details such as how to use the N8N Workflows in detail, troubleshooting and more by visting the URLs below:
-[GainSec](https://gainsec.com)
-[Part 1](https://gainsec.com/2025/06/01/the-quickest-and-simplest-guide-to-spinning-up-a-powerful-local-ai-stack-part-1/)
-[Part 2](https://gainsec.com/2025/06/02/the-quickest-and-simplest-guide-to-spinning-up-a-powerful-local-ai-stack-part-2-searxng/)
-[Part 3](https://gainsec.com/2025/06/03/the-quickest-and-simplest-guide-to-spinning-up-a-powerful-local-ai-stack-part-3-image-generation-via-stable-diffusion/)
-[Part 4](https://gainsec.com/2025/06/04/the-quickest-and-simplest-guide-to-spinning-up-a-powerful-local-ai-stack-part-4-transcription-via-whisper/)
-[Part 5](https://gainsec.com/2025/06/07/the-quickest-and-simplest-guide-to-spinning-up-a-powerful-local-ai-stack-part-5-open-webui-to-crawl4ai-local-files/)
-[Part 6](https://gainsec.com/2025/06/08/the-quickest-and-simplest-guide-to-spinning-up-a-powerful-local-ai-stack-part-6-open-webui-to-crawl4ai-chat/)
-[Part 7](https://gainsec.com/)
+* [GainSec.com](https://gainsec.com)
+* [Part 1](https://gainsec.com/2025/06/01/* the-quickest-and-simplest-guide-to-spinning-up-a-powerful-local-ai-stack-part-1/)
+* [Part 2](https://gainsec.com/2025/06/02/* the-quickest-and-simplest-guide-to-spinning-up-a-powerful-local-ai-stack-part-2-searxng/)
+* [Part 3](https://gainsec.com/2025/06/03/the-quickest-and-simplest-guide-to-spinning-up-a-powerfu* l-local-ai-stack-part-3-image-generation-via-stable-diffusion/)
+* [Part 4](https://gainsec.com/2025/06/04/the-quickest-and-simplest-guide-to-spinning-up-a-powerfu* l-local-ai-stack-part-4-transcription-via-whisper/)
+* [Part 5](https://gainsec.com/2025/06/07/the-quickest-and-simplest-guide-to-spinning-up-a-powerfu* l-local-ai-stack-part-5-open-webui-to-crawl4ai-local-files/)
+* [Part 6](https://gainsec.com/2025/06/08/the-quickest-and-simplest-guide-to-spinning-up-a-powerfu* l-local-ai-stack-part-6-open-webui-to-crawl4ai-chat/)
+* [Part 7](https://gainsec.com/2025/06/09/the-quickest-and-simplest-guide-to-spinning-up-a-powerful-local-ai-stack-part-7-current-stack-docker-deploy/)
+* [More Coming Soon](https://gainsec.com/)
 
 ## Authors
 
