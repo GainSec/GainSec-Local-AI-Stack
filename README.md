@@ -127,12 +127,12 @@ Haven't put much up in this public repo yet, but below is what I have currently 
 
 ## Get more explainations and details such as how to use the N8N Workflows in detail, troubleshooting and more by visting the URLs below:
 * [GainSec.com](https://gainsec.com)
-* [Part 1](https://gainsec.com/2025/06/01/* the-quickest-and-simplest-guide-to-spinning-up-a-powerful-local-ai-stack-part-1/)
-* [Part 2](https://gainsec.com/2025/06/02/* the-quickest-and-simplest-guide-to-spinning-up-a-powerful-local-ai-stack-part-2-searxng/)
-* [Part 3](https://gainsec.com/2025/06/03/the-quickest-and-simplest-guide-to-spinning-up-a-powerfu* l-local-ai-stack-part-3-image-generation-via-stable-diffusion/)
-* [Part 4](https://gainsec.com/2025/06/04/the-quickest-and-simplest-guide-to-spinning-up-a-powerfu* l-local-ai-stack-part-4-transcription-via-whisper/)
-* [Part 5](https://gainsec.com/2025/06/07/the-quickest-and-simplest-guide-to-spinning-up-a-powerfu* l-local-ai-stack-part-5-open-webui-to-crawl4ai-local-files/)
-* [Part 6](https://gainsec.com/2025/06/08/the-quickest-and-simplest-guide-to-spinning-up-a-powerfu* l-local-ai-stack-part-6-open-webui-to-crawl4ai-chat/)
+* [Part 1](https://gainsec.com/2025/06/01/the-quickest-and-simplest-guide-to-spinning-up-a-powerful-local-ai-stack-part-1/)
+* [Part 2](https://gainsec.com/2025/06/02/the-quickest-and-simplest-guide-to-spinning-up-a-powerful-local-ai-stack-part-2-searxng/)
+* [Part 3](https://gainsec.com/2025/06/03/the-quickest-and-simplest-guide-to-spinning-up-a-powerful-local-ai-stack-part-3-image-generation-via-stable-diffusion/)
+* [Part 4](https://gainsec.com/2025/06/04/the-quickest-and-simplest-guide-to-spinning-up-a-powerful-local-ai-stack-part-4-transcription-via-whisper/)
+* [Part 5](https://gainsec.com/2025/06/07/the-quickest-and-simplest-guide-to-spinning-up-a-powerful-local-ai-stack-part-5-open-webui-to-crawl4ai-local-files/)
+* [Part 6](https://gainsec.com/2025/06/08/the-quickest-and-simplest-guide-to-spinning-up-a-powerful-local-ai-stack-part-6-open-webui-to-crawl4ai-chat/)
 * [Part 7](https://gainsec.com/2025/06/09/the-quickest-and-simplest-guide-to-spinning-up-a-powerful-local-ai-stack-part-7-current-stack-docker-deploy/)
 * [More Coming Soon](https://gainsec.com/)
 
